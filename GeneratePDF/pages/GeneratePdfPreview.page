@@ -1,0 +1,13 @@
+<apex:page sidebar="false" standardStylesheets="false" renderAs="pdf" applyHtmlTag="false" applyBodyTag="false" showHeader="false" controller="GeneratePDFController"> 
+    <head>
+        <style>
+            @page {
+                size: A4;
+                margin: 0;
+                padding: 0;
+            } 
+            {!extractedStyles}
+        </style> 
+    </head>
+    <apex:outputText escape="false" value="{!fileTemplateBody}"/>
+</apex:page>

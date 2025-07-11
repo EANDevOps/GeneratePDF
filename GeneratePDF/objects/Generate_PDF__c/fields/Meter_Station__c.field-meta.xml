@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Meter_Station__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Meter Station</label>
+    <referenceTo>Meter_Station__c</referenceTo>
+    <relationshipLabel>Generate PDF</relationshipLabel>
+    <relationshipName>Generate_PDF</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
