@@ -1,7 +1,13 @@
 # Generate PDF Lightning Web Component Suite
 
 ## Introduction
-The Generate PDF application is a comprehensive Salesforce Lightning Web Component (LWC) solution designed to automate PDF generation from email templates with advanced merge field capabilities. This application eliminates the manual process of filling templates by providing dynamic template selection, sophisticated merge field parsing, and seamless PDF generation with attachment and email functionality.
+The Generate PDF application is a comprehensive Salesforce Lightning Web Component (LWC) solution designed to automate PDF generatio4. **ChildMergeFieldValidator**
+   - **File**: `force-app/main/default/classes/ChildMergeFieldValidator.cls`
+   - **Purpose**: Validates child relationship merge fields
+   - **Features**: Relationship traversal validation, nested field checking
+   - **Dependencies**: IRelationshipValidator, IMergeFieldValidator, Guard
+
+5. **ChildRelationshipValidator**email templates with advanced merge field capabilities. This application eliminates the manual process of filling templates by providing dynamic template selection, sophisticated merge field parsing, and seamless PDF generation with attachment and email functionality.
 
 Built for the EA Network by Datacom, this solution addresses the business challenge of manually creating Cost Agreement templates and other documents by providing an intuitive, component-based approach to document generation.
 
@@ -32,26 +38,56 @@ The Generate PDF suite provides the following comprehensive features:
 ### System Overview
 The Generate PDF application follows a modular architecture with clear separation of concerns:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Lightning Web Components                 │
-├─────────────────────────────────────────────────────────────┤
-│  generatePdf (Main)  │  generatePdfDoc  │  generatePdfHistory│
-│  generatePdfPreview  │  generatePdfUtil │  combobox          │
-├─────────────────────────────────────────────────────────────┤
-│                       Apex Controllers                     │
-├─────────────────────────────────────────────────────────────┤
-│  GeneratePDFController │ GeneratePDFFlowHandler │ Selectors  │
-├─────────────────────────────────────────────────────────────┤
-│                    Validation Framework                     │
-├─────────────────────────────────────────────────────────────┤
-│  MergeFieldValidator │ ChildMergeFieldValidator │ Parsers    │
-├─────────────────────────────────────────────────────────────┤
-│                       Data Layer                           │
-├─────────────────────────────────────────────────────────────┤
-│  Generate_PDF__c  │  GeneratePDF_Config__c  │  Templates    │
-└─────────────────────────────────────────────────────────────┘
-```
+### Component Architecture
+
+#### Lightning Web Components
+- **generatePdf** (Main component)
+- **generatePdfDoc** (Template selection)
+- **generatePdfHistory** (History display)
+- **generatePdfPreview** (Modal preview)
+- **generatePdfUtil** (Shared utilities)
+- **combobox** (Reusable dropdown)
+
+#### Apex Controllers
+- **GeneratePDFController** (Main business logic)
+- **GeneratePDFFlowHandler** (Flow integration)
+- **GeneratePDFFlowHandlerBulk** (Bulk processing)
+- **GeneratePDFSelector** (Data access layer)
+- **GeneratePDFBatchLauncher** (Batch coordination)
+
+#### Validation Framework
+- **IMergeFieldValidator** (Interface)
+- **ChildMergeFieldValidator** (Child field validation)
+- **IRelationshipValidator** (Interface)
+- **ChildRelationshipValidator** (Relationship validation)
+- **ValidationHandler** (General validation)
+- **FieldValidationResult** (Result container)
+- **ValidationResult** (General results)
+- **IValidationResult** (Interface)
+- **MergeFieldParser** (Core merge field parser)
+
+#### Supporting Services
+- **GeneratePDFLargeTextBodyHandler** (Large text processing)
+- **Guard** (Null checking utility)
+- **TestDataFactory** (Test data creation)
+
+#### Presentation Layer
+- **GeneratePDFPreview.page** (Visualforce PDF renderer)
+
+#### Data Layer
+- **Generate_PDF__c** (History and audit trail)
+- **GeneratePDF_Config__c** (Configuration storage)
+- **EmailTemplate** (Salesforce standard)
+- **ContentDocument** (File storage)
+- **ContentVersion** (File versioning)
+- **ContentDocumentLink** (File associations)
+
+#### Integration Layer
+- **Flow/Process Builder** (External automation)
+- **Messaging.SingleEmailMessage** (Email services)
+- **SOQL** (Data queries)
+
+**All dependencies are now included in the codebase.**
 
 ### Core Components
 
@@ -148,10 +184,21 @@ The application includes a sophisticated validation framework to ensure merge fi
    - **Purpose**: Contract for field validation implementations
 
 2. **MergeFieldValidator** 
+   - **File**: `force-app/main/default/classes/MergeFieldValidator.cls`
    - **Purpose**: Validates standard merge fields against sObject schema
    - **Features**: Field existence verification, type checking
 
-3. **ChildMergeFieldValidator**
+3. **MergeFieldParser**
+   - **File**: `force-app/main/default/classes/MergeFieldParser.cls`
+   - **Purpose**: Core engine for parsing and processing merge field syntax
+   - **Features**: 
+     - Parses custom {{field}} syntax
+     - Handles child relationship iterations {{#Child}} {{/Child}}
+     - Coordinates with validation framework
+     - Processes parent field traversal
+   - **Dependencies**: IMergeFieldValidator, IRelationshipValidator
+
+4. **ChildMergeFieldValidator**
    - **File**: `force-app/main/default/classes/ChildMergeFieldValidator.cls`
    - **Purpose**: Validates child relationship merge fields
    - **Features**: Relationship traversal validation, nested field checking
@@ -199,17 +246,38 @@ The application includes a sophisticated validation framework to ensure merge fi
    - **File**: `force-app/main/default/classes/GeneratePDFBatchLauncher.cls`
    - **Purpose**: Batch processing coordination
 
-### Missing Dependencies
+3. **Guard**
+   - **File**: `force-app/main/default/classes/Guard.cls`
+   - **Purpose**: Utility class providing null checking and validation
+   - **Features**:
+     - `againstNull(Object, String)`: Validates non-null parameters
+     - Parameter validation with descriptive error messages
+     - Used throughout validation framework
 
-Based on the code analysis, the following dependencies are referenced but not found in the current codebase:
+4. **TestDataFactory**
+   - **File**: `force-app/main/default/classes/TestDataFactory.cls`
+   - **Purpose**: Centralized test data creation utility
+   - **Features**:
+     - `createAccountAsElectricityCustomer()`: Creates test Account records
+     - Standardized test data patterns
+     - Used across all test classes
 
-1. **MergeFieldParser.cls** - Referenced in GeneratePDFController but not present
-2. **Guard.cls** - Utility class for null checking, referenced in ChildMergeFieldValidator
-3. **TestDataFactory.cls** - Test data creation utility, referenced in test classes
-4. **GeneratePDFPreview.page** - Visualforce page for PDF rendering, referenced but not present
+### Presentation Layer
 
-These dependencies need to be created or imported for the application to function properly.
-## Setup
+#### Visualforce Pages
+
+1. **GeneratePDFPreview**
+   - **File**: `force-app/main/default/pages/GeneratePDFPreview.page`
+   - **Purpose**: Renders email templates as PDF documents
+   - **Features**:
+     - Converts HTML email templates to PDF format
+     - Handles merge field processing
+     - Template styling preservation
+     - CSS extraction and application
+   - **Controller**: GeneratePDFController
+   - **Usage**: Called by GeneratePDFController.createDocument() method
+
+## Setup and Configuration
 The application requires the following steps for it to work on a Salesforce record.
 
 Steps
@@ -408,10 +476,13 @@ this button redirects the user to all the all the pdf generation history of the 
 | **GeneratePDFSelector** | Data Access | Template and config retrieval | `getTemplateById()`, caching |
 | **GeneratePDFLargeTextBodyHandler** | Utility | Large content processing | Text handling optimization |
 | **GeneratePDFBatchLauncher** | Batch | Batch job coordination | Async processing |
+| **MergeFieldParser** | Validation | Core merge field parsing | `parse()`, field processing |
 | **ChildMergeFieldValidator** | Validation | Child field validation | `validate()` |
 | **ChildRelationshipValidator** | Validation | Relationship validation | `validate()` |
 | **FieldValidationResult** | Data | Validation result container | Result encapsulation |
 | **ValidationHandler** | Utility | General validation support | Validation coordination |
+| **Guard** | Utility | Null checking and validation | `againstNull()` |
+| **TestDataFactory** | Test Utility | Test data creation | `createAccountAsElectricityCustomer()` |
 
 ### Test Classes
 
@@ -434,6 +505,19 @@ this button redirects the user to all the all the pdf generation history of the 
 | **IFieldValidationResult** | Validation result contract | FieldValidationResult |
 | **IRelationshipValidationResult** | Relationship result contract | Custom implementations |
 | **IValidationResult** | General validation contract | ValidationResult |
+
+### Visualforce Pages
+
+| Page | Purpose | Controller | Key Features |
+|------|---------|------------|--------------|
+| **GeneratePDFPreview** | PDF rendering engine | GeneratePDFController | HTML to PDF conversion, merge field processing, styling |
+
+### Utility Classes
+
+| Class | Purpose | Key Methods | Used By |
+|-------|---------|-------------|---------|
+| **Guard** | Parameter validation | `againstNull()` | ChildMergeFieldValidator, validation framework |
+| **TestDataFactory** | Test data creation | `createAccountAsElectricityCustomer()` | All test classes |
 
 ### Data Model
 
@@ -554,15 +638,15 @@ The Generate PDF Lightning Web Component Suite is a comprehensive Salesforce sol
 - ✅ **UI Components**: Complete Lightning Web Component suite
 - ✅ **Validation Framework**: Advanced merge field validation
 - ✅ **Flow Integration**: InvocableMethod for automation
-- ⚠️ **Missing Dependencies**: 4 classes/pages need implementation
+- ✅ **All Dependencies**: Complete codebase with all required components
 - 🔄 **Email Feature**: Marked as "Coming Soon"
 
 ### Next Steps
-1. Implement missing dependencies (MergeFieldParser, Guard, TestDataFactory, VF page)
-2. Complete email functionality development
-3. Enhance error handling and user feedback
-4. Optimize performance for large templates
-5. Add additional template format support
+1. Complete email functionality development
+2. Enhance error handling and user feedback
+3. Optimize performance for large templates
+4. Add additional template format support
+5. Implement advanced merge field features
 
 This documentation provides the complete technical reference for implementing, configuring, and maintaining the Generate PDF application in Salesforce environments.
 
@@ -734,7 +818,7 @@ npm run prettier
 1. ✅ All Apex classes deployed
 2. ✅ Lightning Web Components deployed
 3. ✅ Custom objects and fields deployed
-4. ❌ Missing dependencies identified:
+4. ✅ All dependencies included:
    - `MergeFieldParser.cls`
    - `Guard.cls`
    - `TestDataFactory.cls`
@@ -753,44 +837,36 @@ npm run prettier
 4. **Parent Traversal Limit**: Maximum 5 levels up hierarchy
 5. **Template Size**: Large templates may require optimization
 
-#### Missing Dependencies
-The following components are referenced but not included:
+#### Implementation Notes
+All core dependencies are now included in the codebase:
 
 1. **MergeFieldParser.cls**
    ```apex
-   // Required by GeneratePDFController.renderTemplate()
-   // Purpose: Parses and validates merge field syntax
-   // Dependencies: IMergeFieldValidator, IRelationshipValidator
+   // Core parsing engine for merge field syntax
+   // Handles {{field}} and {{#Child}} {{/Child}} syntax
+   // Coordinates with validation framework
    ```
 
 2. **Guard.cls**
    ```apex
-   // Required by ChildMergeFieldValidator
-   // Purpose: Null checking utility
-   // Methods needed: Guard.againstNull(Object, String)
+   // Parameter validation utility
+   // Provides null checking: Guard.againstNull(Object, String)
+   // Used throughout validation framework
    ```
 
 3. **TestDataFactory.cls**
    ```apex
-   // Required by test classes
-   // Purpose: Test data creation
-   // Methods needed: createAccountAsElectricityCustomer()
+   // Centralized test data creation
+   // Standardizes test record creation patterns
+   // Used across all test classes
    ```
 
 4. **GeneratePDFPreview.page**
    ```xml
-   <!-- Required by GeneratePDFController.createDocument() -->
-   <!-- Purpose: Visualforce page for PDF rendering -->
-   <!-- Controller: GeneratePDFController -->
+   <!-- Visualforce page for PDF rendering -->
+   <!-- Converts HTML templates to PDF format -->
+   <!-- Controlled by GeneratePDFController -->
    ```
-
-#### Resolution Steps
-To complete the application deployment:
-
-1. Create missing Apex classes based on usage patterns
-2. Implement Visualforce page for PDF rendering
-3. Update test classes to use mock data if TestDataFactory unavailable
-4. Consider alternative PDF generation methods if VF page unavailable
 
 ### Performance Considerations
 
@@ -806,3 +882,4 @@ To complete the application deployment:
 - Monitor `Generate_PDF__c` records for failure patterns
 - Use Lightning Web Component browser debugging
 - Check ContentDocument storage utilization
+
