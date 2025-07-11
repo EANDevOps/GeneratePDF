@@ -1,15 +1,9 @@
 # Generate PDF Lightning Web Component Suite
 
 ## Introduction
-The Generate PDF application is a comprehensive Salesforce Lightning Web Component (LWC) solution designed to automate PDF generatio4. **ChildMergeFieldValidator**
-   - **File**: `force-app/main/default/classes/ChildMergeFieldValidator.cls`
-   - **Purpose**: Validates child relationship merge fields
-   - **Features**: Relationship traversal validation, nested field checking
-   - **Dependencies**: IRelationshipValidator, IMergeFieldValidator, Guard
+The Generate PDF application is a comprehensive Salesforce Lightning Web Component (LWC) solution designed to automate PDF generation from email templates with advanced merge field capabilities. 
 
-5. **ChildRelationshipValidator**email templates with advanced merge field capabilities. This application eliminates the manual process of filling templates by providing dynamic template selection, sophisticated merge field parsing, and seamless PDF generation with attachment and email functionality.
-
-Built for the EA Network by Datacom, this solution addresses the business challenge of manually creating Cost Agreement templates and other documents by providing an intuitive, component-based approach to document generation.
+Built for the EA Network by Datacom and later more functionality has been added by EA Networks, this solution addresses the business challenge of manually creating Cost Agreements, Quotes and other documents by providing an intuitive, component-based approach to document generation.
 
 ## Application Capabilities
 
@@ -204,7 +198,13 @@ The application includes a sophisticated validation framework to ensure merge fi
    - **Features**: Relationship traversal validation, nested field checking
    - **Dependencies**: IRelationshipValidator, IMergeFieldValidator
 
-4. **ChildRelationshipValidator**
+4. **ChildMergeFieldValidator**
+   - **File**: `force-app/main/default/classes/ChildMergeFieldValidator.cls`
+   - **Purpose**: Validates child relationship merge fields
+   - **Features**: Relationship traversal validation, nested field checking
+   - **Dependencies**: IRelationshipValidator, IMergeFieldValidator, Guard
+
+5. **ChildRelationshipValidator**
    - **File**: `force-app/main/default/classes/ChildRelationshipValidator.cls`
    - **Purpose**: Validates child relationship definitions
    - **Features**: Relationship existence verification, cardinality checking
