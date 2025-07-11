@@ -1,0 +1,41 @@
+<template>
+    <template if:true={validConfig}>
+        <lightning-card title="Generate Document">
+
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+
+            <!-- PREFERENCE AND ACTION BUTTON -->
+            <div class="slds-grid slds-wrap slds-p-horizontal_small">
+                <div class="slds-size_1-of-2">
+                    <lightning-radio-group name="radioGroup" label="Preference" options={typeOptions} value={type} type="button" onchange={handleTypeChange}>
+                    </lightning-radio-group>
+                </div>
+                <div class="slds-size_1-of-2 slds-align-bottom slds-text-align_right">
+                    <lightning-button variant="neutral" label={buttonLabel} icon-name={iconName} icon-position="left" onclick={handleCardAction}>
+                    </lightning-button>
+                </div>
+            </div>
+
+            <!-- PDF SECTION -->
+            <template if:true={isPDF}>
+                <div class="slds-p-around_small">
+                    <c-generate-pdf-doc options={options} record-id={recordId} onselect={handlePdfFileSelect} onpreview={handlePreview}></c-generate-pdf-doc>
+                </div>
+                <div class="slds-p-around_small">
+                    <c-generate-pdf-history record-id={recordId} parent-field={parentField} is-on-sidebar={isOnSidebar} community-path={communityPath}></c-generate-pdf-history>
+                </div>
+            </template>
+
+            <!-- EMAIL SECTION -->
+            <template if:true={isEmail}>
+                <div class="slds-p-around_small">
+                    <img class="slds-align_absolute-center" src="/projRes/ui-home-private/emptyStates/noTasks.svg">
+                    <h1 class="slds-align_absolute-center slds-p-around_medium">Coming Soon</h1>
+                </div>
+            </template>
+        </lightning-card>
+        <c-generate-pdf-preview record-id={recordId} community-path={communityPath}></c-generate-pdf-preview>
+    </template>
+</template>

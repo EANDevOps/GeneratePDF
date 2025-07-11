@@ -1,0 +1,11 @@
+<template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-is-relative slds-p-right_small" style="max-width: 495px;">
+            <c-combobox options={options} label="Select Template" value={templateSelected} onselect={handleTemplateSelect} required="true"></c-combobox>
+        </div>
+        <div class="slds-align-bottom">
+            <lightning-button variant="brand" label="Preview" onclick={handlePreview}>
+            </lightning-button>
+        </div>
+    </div>
+</template>

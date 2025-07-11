@@ -1,0 +1,22 @@
+.preview-container {
+    max-width: 100%;
+    width: 80%;
+}
+.preview-header {
+    padding: 10px;
+}
+.preview-body {
+    overflow: hidden;
+    min-height: 250px;
+    position: relative;
+}
+.preview-body iframe {
+    height: calc(100vh - 168px);
+}
+.slds-modal__close {
+    cursor: pointer;
+}
+/** hiding all fixed element with very high z-index **/
+section.slds-modal.preview:not(.slds-fade-in-open) .preview-container {
+    display: none;
+}

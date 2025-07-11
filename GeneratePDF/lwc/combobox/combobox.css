@@ -1,0 +1,30 @@
+.select-drop {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+}
+.slds-input:not(.active) + div {
+    display: none;
+}
+.custom-combobox.slds-has-error .slds-input {
+    box-shadow: unset;
+}
+li {
+    padding: 4px 14px;
+}
+li.group {
+    font-weight: bold;
+}
+li:not(.group).group-items {
+    padding-left: 34px;
+}
+li:not(.group):hover {
+    color: #fff;
+    background-color: #2376CC;
+    cursor: pointer;
+}
+.selected-icon {
+    margin-left: -34px;
+    padding: 0 6px 0 14px;
+}

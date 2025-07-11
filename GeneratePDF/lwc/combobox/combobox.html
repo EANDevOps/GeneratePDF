@@ -1,0 +1,52 @@
+<template>
+    <div class="slds-is-relative custom-combobox">
+        <!-- LABEL -->
+        <label class="slds-form-element__label">
+            <template if:true={required}>
+                <abbr title="required" class="slds-required">*</abbr>
+            </template>
+            {label}
+        </label>
+
+        <!-- INPUT -->
+        <div class="slds-input slds-is-relative" tabindex="0" onclick={handleToggle} onblur={handleBlur}>{value}
+            <lightning-icon icon-name="utility:down" size="xx-small" class="select-drop"></lightning-icon>
+        </div>
+
+        <!-- OPTIONS -->
+        <div class="slds-dropdown slds-dropdown_length-10 slds-dropdown_fluid">
+            <template for:each={selectOptions} for:item="option">
+                <ul key={option.group} class="slds-listbox slds-listbox_vertical" data-value={option.group}>
+
+                    <!-- GROUP -->
+                    <template if:true={option.hasgroup}>
+                        <li class="slds-listbox__item slds-p-vertical_xx-small slds-truncate group" onmousedown={preventDefault}>
+                            {option.group}
+                        </li>
+                         <!-- GROUP ITEMS -->
+                        <template for:each={option.items} for:item="item">
+                            <li key={item.label} class="slds-listbox__item slds-p-vertical_xx-small slds-truncate group-items" data-value={item.value} onmousedown={preventDefault} onclick={handleSelect}>
+                                <template if:true={item.selected}>
+                                    <lightning-icon icon-name="utility:check" size="xx-small" class="selected-icon"></lightning-icon>
+                                </template>
+                                {item.label}
+                            </li>
+                        </template>
+                    </template>
+
+                   <!-- UNGROUP -->
+                    <template if:false={option.hasgroup}>
+                        <template for:each={option.items} for:item="item">
+                            <li key={item.label} class="slds-listbox__item slds-p-vertical_xx-small slds-truncate" data-value={item.value} onmousedown={preventDefault} onclick={handleSelect}>
+                                <template if:true={item.selected}>
+                                    <lightning-icon icon-name="utility:check" size="xx-small" class="selected-icon"></lightning-icon>
+                                </template>
+                                {item.label}
+                            </li>
+                        </template>
+                    </template>
+                </ul>
+            </template>
+        </div>
+    </div>
+</template>

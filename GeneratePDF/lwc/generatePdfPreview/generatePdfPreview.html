@@ -1,0 +1,24 @@
+<template>
+    <section class="slds-modal preview">
+        <div class="slds-modal__container preview-container">
+            <header class="slds-modal__header preview-header">
+                <lightning-icon icon-name="utility:close" variant="inverse" onclick={toggleClose}
+                                size="small" class="slds-button slds-button_icon slds-modal__close">
+                </lightning-icon>
+                <h2 class="slds-modal__title slds-hyphenate">
+                    <span>Preview Template</span>
+                    <p class="slds-text-body_small">{templateLabel}</p>
+                </h2>
+            </header>
+            <div class="slds-modal__content preview-body">
+                <template if:true={isFrameLoading}>
+                    <lightning-spinner alternative-text="Loading Template Preview" size="medium"></lightning-spinner>
+                </template>
+                <div class={iframeClass}>
+                    <iframe width="100%" src={previewUrl} onloadstart={handleLoadStart} onload={handleLoad}></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop"></div>
+</template>

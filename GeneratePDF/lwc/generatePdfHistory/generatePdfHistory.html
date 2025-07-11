@@ -1,0 +1,72 @@
+<template>
+    <div class="slds-p-vertical_small">
+        <span class="slds-text-heading_small">History</span>
+        <template if:true={hasHistory}>
+            <a href={viewAllUrl} target="_blank" class="slds-float_right">
+                <lightning-icon icon-name="utility:list" size="x-small" class="slds-button slds-button_icon slds-p-right_xx-small">
+                </lightning-icon>
+                View All
+            </a>
+        </template>
+    </div>
+    <div class="slds-is-relative">
+
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </template>
+
+        <template if:true={hasHistory}>
+            <div class={containerClass}>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <template for:each={headers} for:item="header">
+                                <th key={header} class="" scope="col">
+                                    <div class="slds-truncate" title={header}>{header}</div>
+                                </th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- TEMPLATE IFs CANNOT BE ABUSED TOO MUCH ON ITERATION-->
+                        <template for:each={histories} for:item="history">
+                            <tr key={history.rowCount} class="slds-hint-parent">
+                                <template for:each={history.row} for:item="cell">
+                                    <td key={cell.label}>
+                                        <!-- TEXT -->
+                                        <div class={cell.class} title={cell.label}>
+                                            {cell.label}
+                                        </div>
+
+                                        <!-- URL  -->
+                                        <div class={cell.class} title={cell.label}>
+                                            <a href={cell.value} target="_blank">{cell.label}</a>
+                                        </div>
+
+                                        <!-- DOWNLOAD  -->
+                                        <div class={cell.class} title={cell.label}>
+                                            <a href="javascript:void(0);" data-ref={cell.value} onclick={handleDownload}>
+                                                <lightning-icon icon-name="utility:download" size="x-small" class="slds-button slds-button_icon">
+                                                </lightning-icon>
+                                            </a>
+                                            <a href="javascript:void(0);" data-ref={cell.value} onclick={handlePreview}>
+                                                <lightning-icon icon-name="utility:preview" size="x-small" class="slds-p-left_x-small slds-button slds-button_icon">
+                                                </lightning-icon>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </template>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+        <template if:true={noHistory}>
+            <div class="slds-p-around_small">
+                <img class="slds-align_absolute-center" src="/img/chatter/OpenRoad.svg" width="50%">
+                <h1 class="slds-align_absolute-center slds-p-vertical_medium slds-text-heading_small">No History Found</h1>
+            </div>
+        </template>
+    </div>
+</template>

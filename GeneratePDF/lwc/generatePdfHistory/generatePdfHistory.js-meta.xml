@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>51.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Generate PDF History</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property label="Parent Lookup Field" name="parentField" type="String" description="The parent lookup field on Notification object" />
+            <property label="Placed on Sidebar?" name="isOnSidebar" type="Boolean" description="Tick this field if you placed the component on sidebar" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

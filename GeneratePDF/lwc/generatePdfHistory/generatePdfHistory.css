@@ -1,0 +1,32 @@
+.onsidebar tr th:nth-child(n+3):not(:last-child),
+.onsidebar tr td:nth-child(n+3):not(:last-child) {
+    display: none;
+}
+
+@media screen and (min-width: 1920px) {
+    .onsidebar tr th:nth-child(n+3):not(:last-child),
+    .onsidebar tr td:nth-child(n+3):not(:last-child) {
+        display: table-cell;
+    }
+    .onsidebar tr th:nth-child(n+4):not(:last-child),
+    .onsidebar tr td:nth-child(n+4):not(:last-child) {
+        display: none;
+    }
+}
+
+h1.slds-text-heading_small + div {
+    min-height: 70px;
+}
+
+td :nth-child(2):not(.URL),
+td :nth-child(3):not(.DOWNLOAD),
+td .URL:last-child,
+td .URL:first-child,
+td .DOWNLOAD:first-child,
+td .DOWNLOAD:nth-child(2) {
+    display: none;
+}
+
+td .DOWNLOAD a + a {
+    display: inline-block !important;
+}
